@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Outfits</title>
+</head>
+<body>
+    <h1>Lista de Outfits</h1>
+    <ul>
+        {% for outfit in outfits %}
+            <li>
+                <img src="{{ outfit.foto.url }}" alt="Foto de {{ outfit.etiqueta.nombre }}" width="100">
+                <p>Etiqueta: {{ outfit.etiqueta.nombre }}</p>
+                <p>Fecha de creación: {{ outfit.creado_en }}</p>
+                <ul>
+                    {% for prenda in outfit.prendas.all %}
+                        <li>{{ prenda.get_tipo_display }}: <a href="{{ prenda.enlace_compra }}">{{ prenda.nombre }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Agregar paginación si la habilitaste en la vista -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if outfits.has_previous %}
+                <a href="?page=1">&laquo; Primera</a>
+                <a href="?page={{ outfits.previous_page_number }}">Anterior</a>
+            {% endif %}
+
+            <span class="current">
+                Página {{ outfits.number }} de {{ outfits.paginator.num_pages }}.
+            </span>
+
+            {% if outfits.has_next %}
+                <a href="?page={{ outfits.next_page_number }}">Siguiente</a>
+                <a href="?page={{ outfits.paginator.num_pages }}">Última &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</body>
+</html>
