@@ -10,7 +10,7 @@
     <ul>
         {% for outfit in outfits %}
             <li>
-                <img src="{{ outfit.foto.url }}" alt="Foto de {{ outfit.etiqueta.nombre }}" width="100">
+                <img src="{{ outfit.foto.url }}" alt="Foto de {{ outfit.etiqueta.nombre }}" width="300">
                 <p>Etiqueta: {{ outfit.etiqueta.nombre }}</p>
                 <p>Fecha de creación: {{ outfit.creado_en }}</p>
                 <ul>

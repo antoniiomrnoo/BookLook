@@ -9,7 +9,7 @@ class Etiqueta(models.Model):
         return self.nombre
 
 class Outfit(models.Model):
-    foto = models.ImageField(upload_to='outfits/')  # Foto del outfit
+    foto = models.ImageField(upload_to='media/outfits')  # Foto del outfit
     etiqueta = models.ForeignKey(Etiqueta, on_delete=models.CASCADE)  # Relación con la etiqueta (verano/invierno)
     creado_en = models.DateTimeField(auto_now_add=True)  # Fecha de creación
 
