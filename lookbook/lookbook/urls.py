@@ -17,9 +17,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from armario.views import OutfitListView
+from armario.views import OutfitCreateView
+from armario.views import home_view
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('armario.urls')),
-    path('', OutfitListView.as_view(), name='home'),
+    path('', home_view, name='home'),
+    path('', OutfitListView.as_view(), name='lista'),
+    path('', OutfitCreateView.as_view(), name='agregar')
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

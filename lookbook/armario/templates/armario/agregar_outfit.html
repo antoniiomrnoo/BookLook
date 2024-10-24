@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Outfit</title>
+    <script>
+        let prendaCount = 3;  // Contador para las prendas, empezamos desde 3 por defecto.
+
+        function agregarPrenda() {
+            const prendaContainer = document.getElementById('prenda-container');
+            const newPrendaForm = `
+                <div>
+                    <h3>Prenda ${prendaCount + 1}</h3>
+                    <label for="id_prenda_${prendaCount}-nombre">Nombre:</label>
+                    <input type="text" name="prenda_${prendaCount}-nombre" required>
+                    <label for="id_prenda_${prendaCount}-enlace_compra">Enlace de compra:</label>
+                    <input type="url" name="prenda_${prendaCount}-enlace_compra" required>
+                    <label for="id_prenda_${prendaCount}-tipo">Tipo:</label>
+                    <select name="prenda_${prendaCount}-tipo" required>
+                        <option value="parte_arriba">Parte de arriba</option>
+                        <option value="pantalones">Pantalones</option>
+                        <option value="zapatos">Zapatos</option>
+                    </select>
+                </div>
+            `;
+            prendaContainer.insertAdjacentHTML('beforeend', newPrendaForm);
+            prendaCount++;
+        }
+    </script>
+</head>
+<body>
+    <h1>Agregar un Nuevo Outfit</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <h2>Detalles del Outfit</h2>
+        {{ outfit_form.as_p }}  <!-- Renderiza el formulario del outfit -->
+
+        <h2>Detalles de las Prendas</h2>
+        
+        <div id="prenda-container">
+            {{ prenda_forms.0.as_p }}  <!-- Renderiza el formulario para la parte de arriba -->
+
+            {{ prenda_forms.1.as_p }}  <!-- Renderiza el formulario para los pantalones -->
+
+            {{ prenda_forms.2.as_p }}  <!-- Renderiza el formulario para los zapatos -->
+        </div>
+
+        <button type="button" onclick="agregarPrenda()">Agregar otra prenda</button>
+
+        <button type="submit">Guardar Outfit</button>
+    </form>
+
+    <a href="{% url 'outfit-list' %}">Volver a la lista de outfits</a>
+</body>
+</html>
