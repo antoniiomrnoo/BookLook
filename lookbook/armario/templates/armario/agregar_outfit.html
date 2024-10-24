@@ -1,8 +1,7 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "base.html" %}
+
+
+{% block content %}
     <title>Agregar Outfit</title>
     <script>
         let prendaCount = 3;  // Contador para las prendas, empezamos desde 3 por defecto.
@@ -56,3 +55,4 @@
     <a href="{% url 'outfit-list' %}">Volver a la lista de outfits</a>
 </body>
 </html>
+{% endblock %}

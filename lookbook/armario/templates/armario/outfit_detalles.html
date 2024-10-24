@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="outfit-detalles d-flex align-items-start">
+        <br>
+        <!-- Imagen del outfit a la izquierda -->
+        <div class="detalles-outfit">
+            <img src="{{ outfit.foto.url }}" alt="Foto de {{ outfit.etiqueta.nombre }}">
+        </div>
+
+        <!-- Información del outfit a la derecha -->
+        <div class="outfit-info">
+            <h2>Detalles del Outfit</h2>
+            <p><strong>Etiqueta:</strong> {{ outfit.etiqueta.nombre }}</p>
+            <p><strong>Fecha de creación:</strong> {{ outfit.creado_en }}</p>
+
+            <!-- Lista de prendas -->
+            <h3>Prendas:</h3>
+            <ul>
+                {% for prenda in outfit.prendas.all %}
+                    <li>{{ prenda.get_tipo_display }}: 
+                        <a href="{{ prenda.enlace_compra }}" target="_blank">{{ prenda.nombre }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

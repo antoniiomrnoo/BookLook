@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
 from .models import Outfit, Etiqueta, Prenda
 from .forms import OutfitForm, PrendaForm 
@@ -7,7 +7,7 @@ from django.views import View
 # Create your views here.
 
 def home_view(request):
-    return render(request, 'base.html')
+    return render(request, 'armario/bienvenida.html')
 
 class OutfitListView(ListView):
     model = Outfit
@@ -49,3 +49,7 @@ class OutfitCreateView(View):
             'outfit_form': outfit_form,
             'prenda_forms': prenda_forms,
         })
+    
+def detalles(request, pk):
+    outfit = get_object_or_404(Outfit, pk=pk)
+    return render(request, 'armario/outfit_detalles.html', {'outfit': outfit})
