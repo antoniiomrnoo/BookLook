@@ -2,7 +2,9 @@
 
 
 {% block content %}
-    <title>Agregar Outfit</title>
+<div class="text-center">
+    <h1>Agregar un nuevo Outfit</h1>
+</div>
     <script>
         let prendaCount = 3;  // Contador para las prendas, empezamos desde 3 por defecto.
 
@@ -29,8 +31,6 @@
     </script>
 </head>
 <body>
-    <h1>Agregar un Nuevo Outfit</h1>
-
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         

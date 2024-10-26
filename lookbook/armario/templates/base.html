@@ -11,15 +11,28 @@
 
     <header>
         <nav class="navbar navbar-expand-lg navbar-light">
-            <div class="navbar-brand text-center flex-grow-1">BookLoook</div>
+            <div class="navbar-brand text-center flex-grow-1">BookLook</div>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto d-flex align-items-center">
                     <li class="nav-item">
                         <a class="nav-link btn btn-outline-lookbook" href="{% url 'outfit-list' %}">Lista de Outfits</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-primary btn-create" href="{% url 'agregar_outfit' %}">Crear Nuevo Outfit</a>
-                    </li>
+                    
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-primary btn-create" href="{% url 'agregar_outfit' %}">Crear Nuevo Outfit</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'logout' %}" class="nav-link btn btn-outline-danger">Cerrar sesión</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a href="{% url 'login' %}" class="nav-link btn btn-outline-primary">Iniciar sesión</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'registro' %}" class="nav-link btn btn-outline-secondary">Registrarse</a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>
