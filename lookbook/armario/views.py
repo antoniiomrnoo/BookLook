@@ -67,7 +67,9 @@ class OutfitCreateView(LoginRequiredMixin, View):
                 prenda_forms.append(prenda_form)
 
         if outfit_form.is_valid() and prenda_forms:
-            outfit = outfit_form.save()
+            outfit = outfit_form.save(commit=False)  # No guardar aún en la base de datos
+            outfit.creador = request.user  # Asigna el usuario actual como creador
+            outfit.save()  # Ahora sí guarda el outfit en la base de datos
 
             for prenda_form in prenda_forms:
                 prenda = prenda_form.save(commit=False)

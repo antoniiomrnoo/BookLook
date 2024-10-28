@@ -1,8 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
-
-from django.db import models
 
 class Etiqueta(models.Model):
     nombre = models.CharField(max_length=50, unique=True, null=True)  # Verano, Invierno, etc.
@@ -15,6 +14,7 @@ class Outfit(models.Model):
     foto = models.ImageField(upload_to='outfits/', null=True)  # Asegúrate de que esta línea esté presente
     etiqueta = models.ForeignKey('Etiqueta', on_delete=models.CASCADE, null=True)
     creado_en = models.DateTimeField(auto_now_add=True, null=True)
+    creador = models.ForeignKey(User, on_delete=models.CASCADE, related_name="outfits", null=True)
 
     def __str__(self):
         return f"Outfit {self.id} - {self.etiqueta.nombre}"
