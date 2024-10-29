@@ -60,21 +60,23 @@ class OutfitCreateView(LoginRequiredMixin, View):
         outfit_form = OutfitForm(request.POST, request.FILES)
         prenda_forms = []
 
-    # Procesar cada prenda desde el número máximo que has definido
+        # Procesar cada prenda desde el número máximo que has definido
         for i in range(10):  # Ajusta este número si deseas permitir más o menos prendas
             prenda_form = PrendaForm(request.POST, prefix=f'prenda_{i}')
             if prenda_form.is_valid():
                 prenda_forms.append(prenda_form)
 
         if outfit_form.is_valid() and prenda_forms:
-            outfit = outfit_form.save(commit=False)  # No guardar aún en la base de datos
+            # Guarda el outfit primero
+            outfit = outfit_form.save(commit=False)
             outfit.creador = request.user  # Asigna el usuario actual como creador
-            outfit.save()  # Ahora sí guarda el outfit en la base de datos
+            outfit.save()  # Guarda el outfit
 
+            # Guarda cada prenda asociada al outfit
             for prenda_form in prenda_forms:
-                prenda = prenda_form.save(commit=False)
-                prenda.outfit = outfit
-                prenda.save()
+                prenda = prenda_form.save(commit=False)  # No guardar aún
+                prenda.outfit = outfit  # Asocia la prenda al outfit
+                prenda.save()  # Guarda la prenda
 
             return redirect('outfit-list')
 
@@ -82,3 +84,27 @@ class OutfitCreateView(LoginRequiredMixin, View):
             'outfit_form': outfit_form,
             'prenda_forms': prenda_forms,
         })
+
+
+from .models import PerfilUsuario
+
+@login_required
+def perfil(request):
+    perfil_usuario = PerfilUsuario.objects.get(usuario=request.user)
+    return render(request, 'perfil.html', {'perfil_usuario': perfil_usuario})
+
+
+from .forms import PerfilUsuarioForm
+
+@login_required
+def editar_perfil(request):
+    perfil_usuario = PerfilUsuario.objects.get(usuario=request.user)
+    if request.method == 'POST':
+        form = PerfilUsuarioForm(request.POST, instance=perfil_usuario)
+        if form.is_valid():
+            form.save()
+            return redirect('perfil')  # Redirige a la vista del perfil
+    else:
+        form = PerfilUsuarioForm(instance=perfil_usuario)
+    
+    return render(request, 'editar_perfil.html', {'form': form})

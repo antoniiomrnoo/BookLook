@@ -26,6 +26,9 @@
                             <a class="nav-link btn btn-primary btn-create" href="{% url 'agregar_outfit' %}">Crear Nuevo Outfit</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link btn btn-outline-info" href="{% url 'perfil' %}">Perfil</a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{% url 'logout' %}" class="nav-link btn btn-outline-danger">Cerrar sesión</a>
                         </li>
                     {% else %}

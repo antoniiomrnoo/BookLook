@@ -25,3 +25,23 @@ class PrendaAdmin(admin.ModelAdmin):
     list_display = ('nombre', 'tipo', 'enlace_compra', 'outfit')
     list_filter = ('tipo', 'outfit__etiqueta')
     search_fields = ('nombre', 'outfit__etiqueta__nombre', 'tipo')
+
+
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
+from .models import PerfilUsuario
+
+# Define un Inline para PerfilUsuario
+class PerfilUsuarioInline(admin.StackedInline):
+    model = PerfilUsuario
+    can_delete = False
+    verbose_name_plural = 'Información Personal'
+
+# Define una clase para el usuario que incluya el Inline de PerfilUsuario
+class UsuarioAdmin(UserAdmin):
+    inlines = (PerfilUsuarioInline,)
+
+# Re-registra el modelo User usando el nuevo administrador
+admin.site.unregister(User)
+admin.site.register(User, UsuarioAdmin)

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="perfil-usuario">
+    <h2>Perfil de {{ request.user.username }}</h2>
+
+    <div class="perfil-info">
+      <p><strong>Nombre:</strong> {{ request.user.first_name }} {{ request.user.last_name }}</p>
+      <p><strong>Email:</strong> {{ request.user.email }}</p>
+      <p><strong>Número de Teléfono:</strong> {{ perfil_usuario.numero_telefono }}</p>
+      <p><strong>Biografía:</strong> {{ perfil_usuario.biografia }}</p>
+      <p><strong>Marca Favorita:</strong> {{ perfil_usuario.marca_favorita }}</p>
+    </div>
+
+    <a href="{% url 'editar_perfil' %}" class="btn btn-primary">Editar Perfil</a>
+  </div>
+{% endblock %}

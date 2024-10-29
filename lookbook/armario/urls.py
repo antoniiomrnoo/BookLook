@@ -14,6 +14,8 @@ urlpatterns = [
     path('registro/', views.registro, name='registro'),
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('logout/', logout_view, name='logout'),
+    path('perfil/', views.perfil, name='perfil'),
+    path('editar_perfil/', views.editar_perfil, name='editar_perfil'),  # URL para la vista de edición
 ]
 
 if settings.DEBUG:
