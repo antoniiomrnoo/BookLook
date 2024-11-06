@@ -98,7 +98,11 @@ from .forms import PerfilUsuarioForm
 
 @login_required
 def editar_perfil(request):
-    perfil_usuario = PerfilUsuario.objects.get(usuario=request.user)
+    try:
+        perfil_usuario = PerfilUsuario.objects.get(usuario=request.user)
+    except PerfilUsuario.DoesNotExist:
+        # Si no existe el perfil, puedes redirigir o crear uno
+        return redirect('crear_perfil')  # Cambia esto según tu lógica
     if request.method == 'POST':
         form = PerfilUsuarioForm(request.POST, instance=perfil_usuario)
         if form.is_valid():
@@ -108,3 +112,45 @@ def editar_perfil(request):
         form = PerfilUsuarioForm(instance=perfil_usuario)
     
     return render(request, 'editar_perfil.html', {'form': form})
+
+
+from django.http import HttpResponseForbidden
+from django.urls import reverse_lazy
+from django.views.generic import DeleteView
+
+# Vistas para editar y eliminar outfits solo por el creador
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.forms import inlineformset_factory
+from django.contrib.auth.decorators import login_required
+from .models import Outfit, Prenda
+from .forms import OutfitForm, PrendaForm
+
+@login_required
+def editar_outfit(request, pk):
+    outfit = get_object_or_404(Outfit, pk=pk, creador=request.user)
+    PrendaFormSet = inlineformset_factory(Outfit, Prenda, form=PrendaForm, extra=0, can_delete=True)
+    outfit_form = OutfitForm(instance=outfit)
+    prenda_formset = PrendaFormSet(instance=outfit)
+
+    if request.method == 'POST':
+        outfit_form = OutfitForm(request.POST, request.FILES, instance=outfit)
+        prenda_formset = PrendaFormSet(request.POST, instance=outfit)
+        
+        if outfit_form.is_valid() and prenda_formset.is_valid():
+            outfit_form.save()
+            prenda_formset.save()
+            return redirect('outfit-list')
+
+    return render(request, 'armario/editar_outfit.html', {
+        'outfit_form': outfit_form,
+        'prenda_formset': prenda_formset,
+    })
+
+from django.views.generic import DeleteView
+from django.urls import reverse_lazy
+
+class OutfitDeleteView(DeleteView):
+    model = Outfit
+    template_name = 'armario/eliminar_outfit.html'  # Asegúrate de que este template exista
+    success_url = reverse_lazy('outfit-list')  # Redirige a la lista de outfits después de la eliminación

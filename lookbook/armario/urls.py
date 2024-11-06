@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import OutfitListView
+from .views import OutfitListView, OutfitDeleteView
 from django.conf.urls.static import static
 from django.conf import settings
 from .views import OutfitCreateView
@@ -16,6 +16,8 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('perfil/', views.perfil, name='perfil'),
     path('editar_perfil/', views.editar_perfil, name='editar_perfil'),  # URL para la vista de edición
+    path('outfits/<int:pk>/editar/', views.editar_outfit, name='editar-outfit'),
+    path('eliminar/<int:pk>/', OutfitDeleteView.as_view(), name='eliminar_outfit'),
 ]
 
 if settings.DEBUG:

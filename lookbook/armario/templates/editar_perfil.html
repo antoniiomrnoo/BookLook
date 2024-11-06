@@ -6,12 +6,7 @@
       {% csrf_token %}
       <h2>Editar Perfil</h2>
       
-      <input type="text" name="first_name" placeholder="Nombre" value="{{ user.first_name }}" required>
-      <input type="text" name="last_name" placeholder="Apellidos" value="{{ user.last_name }}" required>
-      <input type="email" name="email" placeholder="Correo" value="{{ user.email }}" required>
-      <input type="tel" name="phone" placeholder="Teléfono" value="{{ user.phone }}" required>
-      <textarea name="biography" placeholder="Biografía">{{ user.biography }}</textarea>
-      <input type="text" name="favorite_brand" placeholder="Marca favorita" value="{{ user.favorite_brand }}" required>
+      {{ form.as_p }}  <!-- Esto renderiza todos los campos del formulario automáticamente -->
       
       <input type="submit" value="Guardar Cambios">
   </form>

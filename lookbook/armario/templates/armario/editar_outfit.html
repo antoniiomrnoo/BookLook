@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="text-center">
+    <h1>Editar Outfit</h1>
+</div>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <!-- Formulario para los detalles del outfit -->
+    <h2>Detalles del Outfit</h2>
+    {{ outfit_form.as_p }}
+
+    <!-- Formularios para las prendas existentes -->
+    <h2>Prendas</h2>
+    <div id="prenda-container">
+        {{ prenda_formset.management_form }}
+        {% for prenda_form in prenda_formset %}
+            <div class="mb-4">
+                <h4>Prenda {{ forloop.counter }}</h4>
+                {{ prenda_form.as_p }}
+            </div>
+        {% endfor %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    <a href="{% url 'outfit-list' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

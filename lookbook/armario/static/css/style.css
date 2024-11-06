@@ -196,3 +196,40 @@ input[type="submit"]:hover {
     text-align: center;        /* Centrar el mensaje de error */
 }
 
+
+
+/* Botones de editar y eliminar outfit */
+
+.outfit-info .outfit-buttons {
+    margin-top: 20px; /* Espacio encima de los botones */
+    display: flex; /* Usar flexbox para distribuir los botones */
+    justify-content: flex-start; /* Alinear los botones al inicio */
+}
+
+.outfit-info .outfit-buttons a {
+    margin: 0 10px; /* Espacio lateral entre los botones */
+    padding: 8px 15px; /* Ajustar el espaciado interno de los botones */
+    text-align: center; /* Centrar el texto dentro del botón */
+    border-radius: 5px; /* Bordes redondeados */
+    text-transform: uppercase; /* Transformar el texto a mayúsculas */
+    font-weight: bold; /* Negrita en el texto */
+    font-size: 0.9rem; /* Tamaño de fuente más pequeño */
+}
+
+.outfit-info .outfit-buttons a.btn-primary {
+    background-color: #007bff; /* Color de fondo del botón de editar */
+    color: white; /* Color del texto */
+}
+
+.outfit-info .outfit-buttons a.btn-primary:hover {
+    background-color: #0056b3; /* Color al pasar el ratón */
+}
+
+.outfit-info .outfit-buttons a.btn-danger {
+    background-color: #dc3545; /* Color de fondo del botón de eliminar */
+    color: white; /* Color del texto */
+}
+
+.outfit-info .outfit-buttons a.btn-danger:hover {
+    background-color: #c82333; /* Color al pasar el ratón */
+}

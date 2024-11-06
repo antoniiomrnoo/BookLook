@@ -32,7 +32,6 @@ class PerfilUsuarioForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(PerfilUsuarioForm, self).__init__(*args, **kwargs)
-        # Pre-fill the User model fields
         if self.instance and self.instance.usuario:
             self.fields['first_name'].initial = self.instance.usuario.first_name
             self.fields['last_name'].initial = self.instance.usuario.last_name
@@ -40,9 +39,15 @@ class PerfilUsuarioForm(forms.ModelForm):
 
     def save(self, *args, **kwargs):
         perfil = super(PerfilUsuarioForm, self).save(*args, **kwargs)
-        # Save User model fields
-        perfil.usuario.first_name = self.cleaned_data['first_name']
-        perfil.usuario.last_name = self.cleaned_data['last_name']
-        perfil.usuario.email = self.cleaned_data['email']
-        perfil.usuario.save()
+        
+        # Actualiza los campos del User solo si están presentes
+        if 'first_name' in self.cleaned_data:
+            perfil.usuario.first_name = self.cleaned_data['first_name']
+        if 'last_name' in self.cleaned_data:
+            perfil.usuario.last_name = self.cleaned_data['last_name']
+        if 'email' in self.cleaned_data:
+            perfil.usuario.email = self.cleaned_data['email']
+        
+        perfil.usuario.save()  # Guarda los cambios en el usuario
         return perfil
+

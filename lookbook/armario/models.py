@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -25,6 +27,7 @@ class Prenda(models.Model):
         ('parte_arriba', 'Parte de arriba'),
         ('pantalones', 'Pantalones'),
         ('zapatos', 'Zapatos'),
+        ('accesorios', 'Accesorios'),
     ]
     
     outfit = models.ForeignKey(Outfit, related_name='prendas', on_delete=models.CASCADE, null=True)  # Relación con el outfit
@@ -35,10 +38,6 @@ class Prenda(models.Model):
     def __str__(self):
         return f"{self.nombre} ({self.get_tipo_display()})"
 
-
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from django.contrib.auth.models import User
 
 class PerfilUsuario(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE, related_name='perfil')
