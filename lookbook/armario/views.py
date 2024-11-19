@@ -13,19 +13,49 @@ from django.contrib.auth.decorators import login_required
 def home_view(request):
     return render(request, 'armario/bienvenida.html')
 
+from django.views.generic import ListView
+from django.db.models import Q
+from .models import Outfit
+
+from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
+from django.views.generic import ListView
+from .models import Outfit
+
 class OutfitListView(ListView):
     model = Outfit
     template_name = 'armario/lista_outfits.html'  # Ruta al template que mostrarás
     context_object_name = 'outfits'  # Nombre de la variable para acceder a los outfits en el template
-    paginate_by = 10  # Opcional: Si quieres paginación, muestra 10 outfits por página (ajustable)
+    paginate_by = 10  # Muestra 10 outfits por página
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        query = self.request.GET.get('q')  # Obtiene el término de búsqueda
+        if query:
+            queryset = queryset.filter(
+                Q(etiqueta__nombre__icontains=query) |
+                Q(creador__username__icontains=query) |
+                Q(prendas__nombre__icontains=query)
+            ).distinct()  # Elimina duplicados por relaciones
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['q'] = self.request.GET.get('q', '')  # Añade el término de búsqueda al contexto
+        return context
 
 def detalles(request, pk):
+    """
+    Muestra los detalles de un outfit específico.
+    """
     outfit = get_object_or_404(Outfit, pk=pk)
     return render(request, 'armario/outfit_detalles.html', {'outfit': outfit})
 
 
 def registro(request):
+    """
+    Permite a los usuarios registrarse.
+    """
     if request.method == 'POST':
         form = RegistroForm(request.POST)
         if form.is_valid():
@@ -36,6 +66,30 @@ def registro(request):
     else:
         form = RegistroForm()
     return render(request, 'registration/register.html', {'form': form})
+
+# class OutfitListView(ListView):
+#     model = Outfit
+#     template_name = 'armario/lista_outfits.html'  # Ruta al template que mostrarás
+#     context_object_name = 'outfits'  # Nombre de la variable para acceder a los outfits en el template
+#     paginate_by = 10  # Opcional: Si quieres paginación, muestra 10 outfits por página (ajustable)
+
+
+# def detalles(request, pk):
+#     outfit = get_object_or_404(Outfit, pk=pk)
+#     return render(request, 'armario/outfit_detalles.html', {'outfit': outfit})
+
+
+# def registro(request):
+#     if request.method == 'POST':
+#         form = RegistroForm(request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             login(request, user)  # Inicia sesión automáticamente al registrarse
+#             messages.success(request, 'Registro exitoso')
+#             return redirect('home')  # Redirige a la página de inicio
+#     else:
+#         form = RegistroForm()
+#     return render(request, 'registration/register.html', {'form': form})
 
 from django.contrib.auth import logout
 
