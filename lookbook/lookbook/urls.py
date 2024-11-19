@@ -27,7 +27,9 @@ urlpatterns = [
     path('', include('armario.urls')),
     path('', home_view, name='home'),
     path('', OutfitListView.as_view(), name='lista'),
-    path('', OutfitCreateView.as_view(), name='agregar')
+    path('', OutfitCreateView.as_view(), name='agregar'),
+    path('api/', include('armario.urls')),
+    path('api-auth/', include('rest_framework.urls')),
 ]
 
 if settings.DEBUG:

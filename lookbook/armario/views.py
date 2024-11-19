@@ -154,3 +154,37 @@ class OutfitDeleteView(DeleteView):
     model = Outfit
     template_name = 'armario/eliminar_outfit.html'  # Asegúrate de que este template exista
     success_url = reverse_lazy('outfit-list')  # Redirige a la lista de outfits después de la eliminación
+
+
+#API
+
+from rest_framework import generics
+from django_filters.rest_framework import DjangoFilterBackend
+from .models import Prenda, Etiqueta
+from .filters import PrendaFilter, EtiquetaFilter
+from .serializers import EtiquetaSerializer, PrendaSerializer, OutfitSerializer
+from django_filters import rest_framework as filters
+
+class EtiquetaListCreateView(generics.ListCreateAPIView):
+    queryset = Etiqueta.objects.all()
+    serializer_class = EtiquetaSerializer
+    filter_backends=[filters.DjangoFilterBackend]
+    filter_backends= EtiquetaFilter
+
+class PrendaListCreateView(generics.ListCreateAPIView):
+    queryset = Prenda.objects.all()
+    serializer_class = PrendaSerializer
+    filter_backends=[filters.DjangoFilterBackend]
+    filter_backends= PrendaFilter
+
+class PrendaDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Prenda.objects.all()
+    serializer_class = PrendaSerializer
+
+class EtiquetaDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Etiqueta.objects.all()
+    serializer_class = EtiquetaSerializer
+
+class OutfitDetailView(generics.RetrieveAPIView):
+    queryset = Outfit.objects.all()
+    serializer_class = OutfitSerializer
