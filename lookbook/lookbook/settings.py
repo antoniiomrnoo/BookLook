@@ -138,3 +138,4 @@ LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
 LOGIN_URL = 'login'  # URL donde se redirige a los usuarios no autenticados
+
