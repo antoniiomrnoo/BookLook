@@ -56,3 +56,12 @@ def crear_perfil_usuario(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def guardar_perfil_usuario(sender, instance, **kwargs):
     instance.perfil.save()
+
+
+class Valoracion(models.Model):
+    outfit = models.ForeignKey(Outfit, on_delete=models.CASCADE, related_name='valoraciones')
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    valor = models.PositiveIntegerField(default=0)  # Valoración del 1 al 5
+
+    class Meta:
+        unique_together = ('outfit', 'usuario')  # Cada usuario solo puede valorar un outfit una vez

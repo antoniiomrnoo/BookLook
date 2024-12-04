@@ -237,3 +237,21 @@ input[type="submit"]:hover {
 
 
 
+
+/* Estilos solo para el formulario de valoraciones */
+.valoracion-form {
+    background-color: #f8f9fa; /* Fondo claro */
+    border-radius: 8px;        /* Bordes redondeados */
+    padding: 30px;             /* Espaciado interno */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    margin: 50px 0;            /* Margen superior e inferior */
+    max-width: 400px;          /* Ancho máximo del formulario */
+    margin-left: 20px;         /* Alinea el formulario a la izquierda */
+}
+
+/* Si deseas asegurar que no se sobrepase el ancho de la pantalla, puedes agregar esto */
+@media (max-width: 768px) {
+    .valoracion-form {
+        margin-left: 10px;     /* Reduce el margen en pantallas más pequeñas */
+    }
+}

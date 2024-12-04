@@ -1,14 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="outfit-detalles d-flex align-items-start">
-        <br>
-        <!-- Imagen del outfit a la izquierda -->
+    <div class="outfit-detalles d-flex">
         <div class="detalles-outfit">
             <img src="{{ outfit.foto.url }}" alt="Foto de {{ outfit.etiqueta.nombre }}">
         </div>
 
-        <!-- Información del outfit a la derecha -->
         <div class="outfit-info">
             <h2>Detalles del Outfit</h2>
             <p><strong>Etiqueta:</strong> {{ outfit.etiqueta.nombre }}</p>
@@ -25,13 +22,31 @@
                 {% endfor %}
             </ul>
 
-            <!-- Botones de edición y eliminación, visibles solo para el creador del outfit -->
             {% if outfit.creador == request.user %}
                 <div class="outfit-buttons mt-3">
                     <a href="{% url 'editar-outfit' outfit.id %}" class="btn btn-primary">Editar</a>
                     <a href="{% url 'eliminar_outfit' outfit.id %}" class="btn btn-danger" 
                        onclick="return confirm('¿Estás seguro de que deseas eliminar este outfit?');">Eliminar</a>
                 </div>
+            {% endif %}
+
+            <!-- Valoración del outfit (después de las prendas) -->
+            <p><strong>Promedio de valoraciones:</strong> {{ promedio_valoracion }}</p>
+
+            {% if user.is_authenticated %}
+                <form method="post" action="" class="valoracion-form">
+                    {% csrf_token %}
+                    <label for="valor">Valorar este outfit (1-5):</label>
+                    <select name="valor" id="valor" required>
+                        <option value="" disabled selected>Selecciona una valoración</option>
+                        {% for i in "12345" %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-success mt-2">Enviar valoración</button>
+                </form>
+            {% else %}
+                <p><em>Inicia sesión para valorar este outfit.</em></p>
             {% endif %}
         </div>
     </div>

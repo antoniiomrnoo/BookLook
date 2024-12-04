@@ -44,12 +44,28 @@ class OutfitListView(ListView):
         context['q'] = self.request.GET.get('q', '')  # Añade el término de búsqueda al contexto
         return context
 
+from django.db.models import Avg
+from django.shortcuts import redirect
+from armario.models import Valoracion  # Asegúrate de importar el modelo adecuado
+
 def detalles(request, pk):
     """
-    Muestra los detalles de un outfit específico.
+    Muestra los detalles de un outfit específico y permite valorar.
     """
     outfit = get_object_or_404(Outfit, pk=pk)
-    return render(request, 'armario/outfit_detalles.html', {'outfit': outfit})
+    promedio_valoracion = outfit.valoraciones.aggregate(promedio=Avg('valor'))['promedio'] or 0
+
+    # Manejar el envío de una valoración
+    if request.method == 'POST':
+        valor = request.POST.get('valor')
+        if valor and request.user.is_authenticated:
+            Valoracion.objects.create(outfit=outfit, usuario=request.user, valor=valor)
+            return redirect('outfit-detalles', pk=pk)
+
+    return render(request, 'armario/outfit_detalles.html', {
+        'outfit': outfit,
+        'promedio_valoracion': round(promedio_valoracion, 1)
+    })
 
 
 def registro(request):
@@ -242,3 +258,28 @@ class EtiquetaDetailView(generics.RetrieveUpdateDestroyAPIView):
 class OutfitDetailView(generics.RetrieveAPIView):
     queryset = Outfit.objects.all()
     serializer_class = OutfitSerializer
+
+
+#Valoraciones
+
+from django.http import JsonResponse
+from .models import Valoracion
+
+@login_required
+def valorar_outfit(request, pk):
+    """
+    Permite a los usuarios valorar un outfit.
+    """
+    if request.method == 'POST':
+        outfit = get_object_or_404(Outfit, pk=pk)
+        valor = int(request.POST.get('valor', 0))
+        if valor < 1 or valor > 5:
+            return JsonResponse({'error': 'Valoración no válida'}, status=400)
+
+        # Crea o actualiza la valoración del usuario
+        valoracion, creada = Valoracion.objects.update_or_create(
+            outfit=outfit, usuario=request.user, defaults={'valor': valor}
+        )
+        return JsonResponse({'success': 'Valoración registrada con éxito', 'valor': valoracion.valor})
+
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
