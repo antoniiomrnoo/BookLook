@@ -4,48 +4,51 @@
     padding: 1rem;
 }
 
-.navbar-brand {
-    color: #fff;
-    font-size: 2rem;
-    text-transform: uppercase;
-    font-weight: bold;
-    flex-grow: 1; /* Permitir que la marca ocupe espacio adicional */
-    text-align: center; /* Centrar el texto */
-}
-
+/* Navbar-nav para los botones de la izquierda */
 .navbar-nav {
-    display: flex; /* Flex para el menú */
-    align-items: center; /* Alinea verticalmente los elementos en el centro */
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%; /* Asegura que ocupe todo el ancho disponible */
+    justify-content: flex-start; /* Mantiene los botones de la izquierda alineados a la izquierda */
 }
 
-.nav-item {
-    display: flex; /* Flex para los items del menú */
-    align-items: center; /* Alinea verticalmente los botones */
+/* Añadir separación entre los botones de la izquierda */
+.navbar-nav .nav-item {
+    margin-right: 10px; /* Añadir margen entre los botones de la izquierda */
 }
 
-.nav-link {
-    color: #fff;
-    margin-right: 1rem;
-    text-transform: uppercase;
+/* Para los botones de la derecha */
+.navbar-nav-right {
+    margin-left: auto; /* Empuja los elementos hacia la derecha */
+    display: flex;
+    gap: 10px; /* Añade un poco de espacio entre los botones de la derecha */
 }
 
-.nav-link:hover {
-    color: #ff6347;
-    text-decoration: none;
-}
-
-.nav-item .btn {
+/* Asegura que los botones tengan el formato correcto */
+.nav-item .btn, .nav-item-sesion .btn {
     background-color: #ff6347;
     color: white;
     padding: 0.5rem 1rem;
     border-radius: 5px;
     text-transform: uppercase;
+    text-align: center;
 }
 
-.nav-item .btn:hover {
+/* Estilo hover para los botones */
+.nav-item .btn:hover, .nav-item-sesion .btn:hover {
     background-color: #e55330;
     color: white;
 }
+
+
+
+
+
+
+
 
 /* Estilos para la lista de outfits */
 .outfit-list {
@@ -255,3 +258,7 @@ input[type="submit"]:hover {
         margin-left: 10px;     /* Reduce el margen en pantallas más pequeñas */
     }
 }
+
+
+
+
