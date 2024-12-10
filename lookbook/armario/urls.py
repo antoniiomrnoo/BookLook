@@ -19,9 +19,10 @@ urlpatterns = [
     path('outfits/<int:pk>/editar/', views.editar_outfit, name='editar-outfit'),
     path('eliminar/<int:pk>/', OutfitDeleteView.as_view(), name='eliminar_outfit'),
     path('outfit/<int:pk>/valorar/', views.valorar_outfit, name='valorar-outfit'),
+    path('', views.carrusel_view, name='bienvenida'),
 
     path('api/', include('armario.urls_api'))
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -6,8 +6,39 @@
 
 {% block content %}
     <div class="text-center">
-        <img src="{% static '/logo2.png' %}" alt="Logo de Mi Lookbook" class="welcome-logo">
+        <img src="{% static 'logo2.png' %}" alt="Logo de Mi Lookbook" class="welcome-logo">
         <p class="welcome-text">Descubre, crea y comparte tus outfits favoritos.</p>
-        <p>(Al subir tu outfit, intenta utilizar un fomato de imagen parecido al que ya hay subido)</p>
     </div>
+
+    <!-- Carrusel de Outfits Mejor Valorados -->
+    <div class="carousel-container" style="width: 80%; margin: 0 auto; text-align: center;">
+        <div class="carousel">
+            {% for outfit in outfits_mejor_valorados %}
+            <div class="carousel-item" style="display: none; text-align: center;">
+                <img src="{{ outfit.foto.url }}" alt="Outfit {{ outfit.id }}" class="carousel-image" style="width: 25%; height: 500px; margin: 0 auto;">
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Script para el Carrusel -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let currentIndex = 0;
+            const items = document.querySelectorAll('.carousel-item');
+            
+            // Mostrar el primer elemento
+            items[currentIndex].style.display = 'block';
+
+            // Función para mostrar el siguiente outfit
+            function showNext() {
+                items[currentIndex].style.display = 'none';  // Ocultar el actual
+                currentIndex = (currentIndex + 1) % items.length;  // Incrementar el índice
+                items[currentIndex].style.display = 'block';  // Mostrar el siguiente
+            }
+
+            // Cambiar de imagen cada 3 segundos
+            setInterval(showNext, 3000);
+        });
+    </script>
 {% endblock %}

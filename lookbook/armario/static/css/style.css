@@ -45,11 +45,6 @@
 
 
 
-
-
-
-
-
 /* Estilos para la lista de outfits */
 .outfit-list {
     display: flex;
@@ -261,4 +256,23 @@ input[type="submit"]:hover {
 
 
 
+
+.carousel-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.carousel-item {
+    display: none;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.carousel-image {
+    width: 30%; /* Ajusta el tamaño de la imagen al 30% del contenedor */
+    height: auto;
+    border-radius: 8px;
+    margin: 0 auto; /* Centra la imagen */
+}
 

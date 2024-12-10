@@ -283,3 +283,20 @@ def valorar_outfit(request, pk):
         return JsonResponse({'success': 'Valoración registrada con éxito', 'valor': valoracion.valor})
 
     return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+
+
+
+from django.shortcuts import render
+from django.db.models import Avg
+from armario.models import Outfit
+
+def carrusel_view(request):
+    # Obtén los 5 outfits con mayor puntuación promedio
+    outfits_mejor_valorados = Outfit.objects.annotate(
+        promedio_valoracion=Avg('valoraciones__valor')
+    ).order_by('-promedio_valoracion')[:5]
+
+    return render(request, 'armario/bienvenida.html', {
+        'outfits_mejor_valorados': outfits_mejor_valorados
+    })
