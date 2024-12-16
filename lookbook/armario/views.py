@@ -21,6 +21,10 @@ from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 from django.views.generic import ListView
 from .models import Outfit
+from django.db.models import Avg
+from django.views.generic import ListView
+from django.db.models import Q
+from .models import Outfit
 
 class OutfitListView(ListView):
     model = Outfit
@@ -42,7 +46,14 @@ class OutfitListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['q'] = self.request.GET.get('q', '')  # Añade el término de búsqueda al contexto
+
+        # Calcular el promedio de valoración para cada outfit
+        for outfit in context['outfits']:
+            promedio_valoracion = outfit.valoraciones.aggregate(promedio=Avg('valor'))['promedio'] or 0
+            outfit.valoracion_promedio = round(promedio_valoracion, 1)
+
         return context
+
 
 from django.db.models import Avg
 from django.shortcuts import redirect
@@ -219,12 +230,20 @@ def editar_outfit(request, pk):
 
 from django.views.generic import DeleteView
 from django.urls import reverse_lazy
+from django.http import Http404
 
 class OutfitDeleteView(DeleteView):
     model = Outfit
-    template_name = 'armario/eliminar_outfit.html'  # Asegúrate de que este template exista
-    success_url = reverse_lazy('outfit-list')  # Redirige a la lista de outfits después de la eliminación
+    template_name = 'armario/eliminar_outfit.html'
+    success_url = reverse_lazy('outfit-list')
 
+    def get_object(self, queryset=None):
+        # Obtén el objeto
+        obj = super().get_object(queryset)
+        # Verifica si el usuario es el creador
+        if obj.creador != self.request.user:
+            raise Http404("No tienes permiso para eliminar este outfit")
+        return obj
 
 #API
 
@@ -300,3 +319,15 @@ def carrusel_view(request):
     return render(request, 'armario/bienvenida.html', {
         'outfits_mejor_valorados': outfits_mejor_valorados
     })
+
+
+
+from django.shortcuts import render
+from .models import Outfit  # Asegúrate de que Outfit sea el nombre correcto de tu modelo de outfit
+
+def user_outfits(request):
+    if request.user.is_authenticated:
+        outfits = Outfit.objects.filter(creador=request.user)  # Filtra los outfits del usuario
+        return render(request, 'user_outfits.html', {'outfits': outfits})
+    else:
+        return redirect('login')  # Redirige a login si el usuario no está autenticado

@@ -20,6 +20,7 @@ urlpatterns = [
     path('eliminar/<int:pk>/', OutfitDeleteView.as_view(), name='eliminar_outfit'),
     path('outfit/<int:pk>/valorar/', views.valorar_outfit, name='valorar-outfit'),
     path('', views.carrusel_view, name='bienvenida'),
+    path('mis-outfits/', views.user_outfits, name='user_outfits'),
 
     path('api/', include('armario.urls_api'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

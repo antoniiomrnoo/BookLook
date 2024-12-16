@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="text-center">Mis Outfits</h1>
+    
+    {% if outfits %}
+        <div class="outfit-list">
+            {% for outfit in outfits %}
+                <div class="outfit-item">
+                    <div class="outfit-foto">
+                        <!-- Envolvemos la imagen con un enlace al detalle del outfit -->
+                        <a href="{% url 'outfit-detalles' outfit.pk %}">
+                            <img src="{{ outfit.foto.url }}" alt="Foto de {{ outfit.etiqueta.nombre }}">
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No has creado ningún outfit aún.</p>
+    {% endif %}
+{% endblock %}

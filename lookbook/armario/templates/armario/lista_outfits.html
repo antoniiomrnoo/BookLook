@@ -11,10 +11,25 @@
 
 <div class="outfit-list">
     {% for outfit in outfits %}
-    <div class="outfit-foto">
-        <a href="{% url 'outfit-detalles' outfit.pk %}">
-            <img src="{{ outfit.foto.url }}" alt="Foto de {{ outfit.etiqueta.nombre }}">
-        </a>
+    <div class="outfit-item">
+        <div class="outfit-foto">
+            <a href="{% url 'outfit-detalles' outfit.pk %}">
+                <img src="{{ outfit.foto.url }}" alt="Foto de {{ outfit.etiqueta.nombre }}">
+            </a>
+        </div>
+
+        <!-- Información adicional del outfit -->
+        <div class="outfit-info">
+            <p><strong>Creador:</strong> {{ outfit.creador.username }}</p> <!-- Nombre del creador -->
+            
+            <p><strong>Valoración:</strong> 
+                {% if outfit.valoracion_promedio %}
+                    {{ outfit.valoracion_promedio|default:"No valorado" }}
+                {% else %}
+                    No valorado
+                {% endif %}
+            </p>
+        </div>
     </div>
     {% endfor %}
 </div>

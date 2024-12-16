@@ -43,6 +43,25 @@
     color: white;
 }
 
+/* Tamaño de la imagen del logo */
+.logo-navbar {
+    height: 40px; /* Ajusta la altura del logo */
+    width: auto; /* Mantiene la proporción de la imagen */
+    display: block;
+}
+
+/* Estilo específico para el logo dentro del botón */
+.btn-outline-lookbook .logo-navbar {
+    background-color: transparent; /* Sin fondo */
+    border: none; /* Sin borde */
+}
+
+/* Añadir margen al logo para separarlo del siguiente botón */
+.nav-item-logo {
+    margin-right: 15px; /* Ajusta el valor según la separación deseada */
+}
+
+
 
 
 /* Estilos para la lista de outfits */
@@ -53,18 +72,42 @@
     margin-top: 20px; /* Espacio superior */
 }
 
-.outfit-foto {
+.outfit-item {
     flex: 0 1 calc(30% - 20px); /* 3 columnas (30% de ancho) */
     margin-bottom: 20px; /* Espacio inferior entre filas */
     box-sizing: border-box; /* Para incluir el padding y margin en el tamaño total */
+    display: flex;
+    flex-direction: column; /* Coloca las imágenes y el texto en una columna */
+}
+
+.outfit-foto {
+    width: 100%;
+    height: 700px; /* Altura fija para las imágenes */
+    overflow: hidden;
+    box-sizing: border-box;
+    margin-bottom: 10px; /* Espacio entre la imagen y la información */
 }
 
 .outfit-foto img {
     width: 100%; /* Imagen ocupa todo el ancho del contenedor */
-    height: 700px; /* Ajusta la altura fija deseada */
+    height: 100%;
     object-fit: cover; /* Asegura que la imagen cubra el área sin deformarse */
     border-radius: 8px; /* Bordes redondeados */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra de la imagen */
+}
+
+.outfit-info {
+    padding: 10px;
+    background-color: #f9f9f9;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para la paginación */
+.pagination {
+    margin-top: 20px;
+    text-align: center;
 }
 
 
