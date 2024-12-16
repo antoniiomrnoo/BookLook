@@ -62,6 +62,13 @@
 }
 
 
+/* Márgen lateral derecho para los botones de la derecha */
+.navbar-nav-right {
+    margin-right: 10px; /* Añade espacio al borde derecho del navegador */
+}
+
+
+
 
 
 /* Estilos para la lista de outfits */
