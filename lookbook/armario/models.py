@@ -11,15 +11,39 @@ class Etiqueta(models.Model):
     def __str__(self):
         return self.nombre
 
+from django.db import models
+from django.contrib.auth.models import User
+from PIL import Image
 
 class Outfit(models.Model):
-    foto = models.ImageField(upload_to='outfits/', null=True)  # Asegúrate de que esta línea esté presente
+    foto = models.ImageField(upload_to='outfits/', null=True)  
+
     etiqueta = models.ForeignKey('Etiqueta', on_delete=models.CASCADE, null=True)
     creado_en = models.DateTimeField(auto_now_add=True, null=True)
     creador = models.ForeignKey(User, on_delete=models.CASCADE, related_name="outfits", null=True)
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)  # Guarda la imagen original
+
+        if self.foto:
+            img_path = self.foto.path
+            max_size = (800, 800)  # Ajusta el tamaño máximo según tus necesidades
+
+            with Image.open(img_path) as img:
+                img.thumbnail(max_size)  # Redimensiona manteniendo la proporción
+                img.save(img_path, optimize=True, quality=80)  # Optimiza la imagen con buena calidad
+
     def __str__(self):
         return f"Outfit {self.id} - {self.etiqueta.nombre}"
+
+# class Outfit(models.Model):
+#     foto = models.ImageField(upload_to='outfits/', null=True)  # Asegúrate de que esta línea esté presente
+#     etiqueta = models.ForeignKey('Etiqueta', on_delete=models.CASCADE, null=True)
+#     creado_en = models.DateTimeField(auto_now_add=True, null=True)
+#     creador = models.ForeignKey(User, on_delete=models.CASCADE, related_name="outfits", null=True)
+
+#     def __str__(self):
+#         return f"Outfit {self.id} - {self.etiqueta.nombre}"
 
 
 class Prenda(models.Model):

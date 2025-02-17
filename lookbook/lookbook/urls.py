@@ -34,9 +34,10 @@ urlpatterns = [
     path('', OutfitCreateView.as_view(), name='agregar'),
     path('api-auth/', include('rest_framework.urls')),
 
+    #WAGTAIL
     path('cms/', include(wagtailadmin_urls)),
     path('documents/', include(wagtaildocs_urls)),
-    path('blog/', include(wagtail_urls)),
+    path('blog/', include(wagtail_urls), name='user-blog'),
 ]
 
 if settings.DEBUG:

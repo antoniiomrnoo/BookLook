@@ -29,7 +29,7 @@
 
 /* Asegura que los botones tengan el formato correcto */
 .nav-item .btn, .nav-item-sesion .btn {
-    background-color: #ff6347;
+    background-color: #006c86;
     color: white;
     padding: 0.5rem 1rem;
     border-radius: 5px;
@@ -39,7 +39,7 @@
 
 /* Estilo hover para los botones */
 .nav-item .btn:hover, .nav-item-sesion .btn:hover {
-    background-color: #e55330;
+    background-color: #006c86;
     color: white;
 }
 
@@ -173,8 +173,8 @@
 
 /* Estilo para el logo de bienvenida */
 .welcome-logo {
-    width: 50%; /* Ajusta el tamaño del logo (50% del contenedor) */
-    max-width: 400px; /* Ancho máximo para mantener el logo razonable */
+    width: 70%; /* Ajusta el tamaño del logo (50% del contenedor) */
+    max-width: 500px; /* Ancho máximo para mantener el logo razonable */
     height: auto; /* Mantener la proporción de la imagen */
     margin-bottom: 20px; /* Espacio debajo del logo */
 }
@@ -320,9 +320,16 @@ input[type="submit"]:hover {
 }
 
 .carousel-image {
-    width: 30%; /* Ajusta el tamaño de la imagen al 30% del contenedor */
+    width: 100%;  /* Ajusta el ancho al contenedor */
+    height: auto;  /* Mantén la altura proporcional */
+    object-fit: contain;  /* Ajusta la imagen para que se ajuste sin distorsionarse */
+}
+
+
+/* .carousel-image {
+    width: 30%; 
     height: auto;
     border-radius: 8px;
-    margin: 0 auto; /* Centra la imagen */
-}
+    margin: 0 auto; 
+} */
 

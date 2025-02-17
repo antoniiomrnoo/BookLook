@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -156,9 +155,73 @@ LOGOUT_REDIRECT_URL = 'home'
 
 LOGIN_URL = 'login'  # URL donde se redirige a los usuarios no autenticados
 
+CSRF_COOKIE_SECURE = True
+
+LOGGING = {
+"version": 1,
+"disable_existing_loggers": False,
+"handlers": {"console": {"class": "logging.StreamHandler"}},
+"loggers": {"django_auth_ldap": {"level": "DEBUG", "handlers": ["console"]}}}
 
 #WAGTAIL
 WAGTAIL_SITE_NAME = 'LookBook'
 WAGTAILADMIN_BASE_URL = 'http://localhost:8000'
 WAGTAILDOCS_EXTENSIONS = ['csv', 'docx', 'key', 'odt', 'pdf', 'pptx', 'rtf', 'txt', 'xlsx', 'zip']
 
+#LDAP
+
+import ldap
+from django_auth_ldap.config import LDAPSearch, GroupOfNamesType
+
+AUTH_LDAP_SERVER_URI = "ldap://127.0.0.1:1389"
+
+AUTH_LDAP_BIND_DN = "cn=admin,dc=example,dc=org"
+AUTH_LDAP_BIND_PASSWORD = "admin"
+AUTH_LDAP_USER_SEARCH = LDAPSearch(
+    "ou=users,dc=example,dc=org", ldap.SCOPE_SUBTREE, "(uid=%(user)s)"
+)
+
+# Set up the basic group parameters.
+AUTH_LDAP_GROUP_SEARCH = LDAPSearch(
+    "ou=users,dc=example,dc=org",
+    ldap.SCOPE_SUBTREE,
+    "(objectClass=groupOfNames)",
+)
+AUTH_LDAP_GROUP_TYPE = GroupOfNamesType(name_attr="cn")
+
+# Populate the Django user from the LDAP directory.
+AUTH_LDAP_USER_ATTR_MAP = {
+    "first_name": "givenName",
+    "last_name": "sn",
+    "email": "mail",
+}
+
+# Keep ModelBackend around for per-user permissions and maybe a local superuser.
+AUTHENTICATION_BACKENDS = (
+    "django_auth_ldap.backend.LDAPBackend",
+    "django.contrib.auth.backends.ModelBackend",
+)
+
+AUTH_LDAP_USER_FLAGS_BY_GROUP = {
+    "is_active": "cn=readers,ou=users,dc=example,dc=org",
+    "is_staff": "cn=bloggers,ou=users,dc=example,dc=org",
+    "is_superuser": "cn=superusers,ou=users,dc=example,dc=org",
+}
+
+ADMIN_USER_NAME="user01"
+ADMIN_USER_EMAIL="antonio.moreno.varilla.alu@iesfernandoaguilar.es"
+MANAGERS=[]
+ADMINS=[]
+if all([ADMIN_USER_NAME, ADMIN_USER_EMAIL]):
+    ADMINS +=[
+        (f'{ADMIN_USER_NAME}', f'{ADMIN_USER_EMAIL}')
+    ]
+    MANAGERS=ADMINS
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = 'smtp.gmail.com'  # Cambia esto por el servidor SMTP de tu institución
+EMAIL_PORT = 587  # Usualmente 587 para TLS o 465 para SSL
+EMAIL_USE_TLS = True  # True si usas TLS, False si usas SSL
+EMAIL_HOST_USER = 'antonio.moreno.varilla.alu@iesfernandoaguilar.es'  # Correo de envío
+EMAIL_HOST_PASSWORD = 'klmi qhio izxa kfyg'  # Usa variables de entorno para mayor seguridad
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
